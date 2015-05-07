@@ -95,6 +95,8 @@ func (p *UserAgent) detectBrowser(sections []section) {
 						p.browser.Version = "9.0"
 					case "6.0":
 						p.browser.Version = "10.0"
+					case "7.0":
+						p.browser.Version = "11.0"
 					}
 					break
 				}
