@@ -32,7 +32,6 @@ type Browser struct {
 // sections from the User-Agent string after being parsed.
 func (p *UserAgent) detectBrowser(sections []section) {
 	slen := len(sections)
-
 	if sections[0].name == "Opera" {
 		p.mozilla = ""
 		p.browser.Name = "Opera"
@@ -67,9 +66,17 @@ func (p *UserAgent) detectBrowser(sections []section) {
 				// This is the new user agent from Internet Explorer 11.
 				p.browser.Engine = "Trident"
 				p.browser.Name = "Internet Explorer"
-				reg, _ := regexp.Compile("^rv:(.+)$")
+				ereg, _ := regexp.Compile("^Trident/([0-9.]+)")
 				for _, c := range sections[0].comment {
-					version := reg.FindStringSubmatch(c)
+					version := ereg.FindStringSubmatch(c)
+					if len(version) > 0 {
+						p.browser.EngineVersion = version[1]
+						break
+					}
+				}
+				breg, _ := regexp.Compile("^rv:(.+)$")
+				for _, c := range sections[0].comment {
+					version := breg.FindStringSubmatch(c)
 					if len(version) > 0 {
 						p.browser.Version = version[1]
 						return
@@ -88,7 +95,10 @@ func (p *UserAgent) detectBrowser(sections []section) {
 			// http://msdn.microsoft.com/en-us/library/ie/ms537503(v=vs.85).aspx#VerToken
 			for _, v := range comment {
 				if strings.HasPrefix(v, "Trident/") {
-					switch v[8:] {
+					if p.browser.EngineVersion == "" {
+						p.browser.EngineVersion = v[8:]
+					}
+					switch p.browser.EngineVersion {
 					case "4.0":
 						p.browser.Version = "8.0"
 					case "5.0":
