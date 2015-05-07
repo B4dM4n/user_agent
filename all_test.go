@@ -39,6 +39,7 @@ var uastrings = []struct {
 	{"IE11b32Win7b64", "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko"},
 	{"IE11b32Win7b64MDDRJS", "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; MDDRJS; rv:11.0) like Gecko"},
 	{"IE11Compatibility", "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.3; Trident/7.0)"},
+	{"IE11ProcessingPAC", "Mozilla/5.0 (compatible; IE 11.0; Win64; Trident/7.0)"},
 
 	// Gecko
 	{"FirefoxMac", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:2.0b8) Gecko/20100101 Firefox/4.0b8"},
@@ -128,6 +129,7 @@ var expected = []string{
 	"Mozilla:5.0 Platform:Windows OS:Windows 7 Browser:Internet Explorer-11.0 Engine:Trident-7.0 Bot:false Mobile:false",
 	"Mozilla:5.0 Platform:Windows OS:Windows 7 Browser:Internet Explorer-11.0 Engine:Trident-7.0 Bot:false Mobile:false",
 	"Mozilla:4.0 Platform:Windows OS:Windows 8.1 Browser:Internet Explorer-11.0 Engine:Trident-7.0 Bot:false Mobile:false",
+	"Mozilla:5.0 Platform:Windows OS:Windows Browser:Internet Explorer-11.0 Engine:Trident-7.0 Bot:false Mobile:false",
 
 	// Gecko
 	"Mozilla:5.0 Platform:Macintosh OS:Intel Mac OS X 10.6 Browser:Firefox-4.0b8 Engine:Gecko-20100101 Bot:false Mobile:false",

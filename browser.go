@@ -87,7 +87,8 @@ func (p *UserAgent) detectBrowser(sections []section) {
 		}
 	} else if slen == 1 && len(sections[0].comment) > 1 {
 		comment := sections[0].comment
-		if comment[0] == "compatible" && strings.HasPrefix(comment[1], "MSIE") {
+		if comment[0] == "compatible" &&
+			(strings.HasPrefix(comment[1], "MSIE") || strings.HasPrefix(comment[1], "IE")) {
 			p.browser.Engine = "Trident"
 			p.browser.Name = "Internet Explorer"
 			// The MSIE version may be reported as the compatibility version.

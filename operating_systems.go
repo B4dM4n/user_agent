@@ -209,6 +209,11 @@ func getPlatform(comment []string) string {
 			}
 			return comment[0]
 		}
+		for _, c := range comment[1:] {
+			if strings.HasPrefix(c, "Win64") || strings.HasPrefix(c, "Win32") {
+				return "Windows"
+			}
+		}
 	}
 	return ""
 }
@@ -220,7 +225,11 @@ func (p *UserAgent) detectOS(s section) {
 		// that is not backwards-compatible with previous versions of IE.
 		p.platform = getPlatform(s.comment)
 		if p.platform == "Windows" && len(s.comment) > 0 {
-			p.os = normalizeOS(s.comment[0])
+			if s.comment[0] != "compatible" {
+				p.os = normalizeOS(s.comment[0])
+			} else {
+				p.os = "Windows"
+			}
 		}
 
 		// And finally get the OS depending on the engine.
