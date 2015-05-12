@@ -32,15 +32,35 @@ type Browser struct {
 // sections from the User-Agent string after being parsed.
 func (p *UserAgent) detectBrowser(sections []section) {
 	slen := len(sections)
+
+	// opera without mozilla version
 	if sections[0].name == "Opera" {
-		p.mozilla = ""
+		p.mozilla = "" // opera does not pass mozilla version
 		p.browser.Name = "Opera"
 		p.browser.Version = sections[0].version
 		p.browser.Engine = "Presto"
 		if slen > 1 {
 			p.browser.EngineVersion = sections[1].version
 		}
-	} else if slen > 1 {
+		return
+	}
+
+	// chrome without mozilla version
+	if sections[0].name == "Chrome" {
+		p.mozilla = "5.0" // chrome is always 5.0+
+		p.browser.Name = "Chrome"
+		if slen > 2 {
+			p.browser.Version = sections[2].name
+			p.browser.Engine = "AppleWebKit"
+		}
+		return
+	}
+
+	// set mozilla version
+	p.mozilla = sections[0].version
+
+	// traditional multiple browser agent format
+	if slen > 1 {
 		engine := sections[1]
 		p.browser.Engine = engine.name
 		p.browser.EngineVersion = engine.version
@@ -85,7 +105,12 @@ func (p *UserAgent) detectBrowser(sections []section) {
 				p.browser.Version = ""
 			}
 		}
-	} else if slen == 1 && len(sections[0].comment) > 1 {
+		// done processing
+		return
+	}
+
+	// Internet Explorer new style agent
+	if slen == 1 && len(sections[0].comment) > 1 {
 		comment := sections[0].comment
 		if comment[0] == "compatible" &&
 			(strings.HasPrefix(comment[1], "MSIE") || strings.HasPrefix(comment[1], "IE")) {
@@ -118,6 +143,8 @@ func (p *UserAgent) detectBrowser(sections []section) {
 			}
 		}
 	}
+	// done processing
+	return
 }
 
 // Returns two strings. The first string is the name of the engine and the

@@ -219,7 +219,8 @@ func getPlatform(comment []string) string {
 }
 
 // Detect some properties of the OS from the given section.
-func (p *UserAgent) detectOS(s section) {
+func (p *UserAgent) detectOS(sections []section) {
+	s := sections[0]
 	if s.name == "Mozilla" {
 		// Get the platform here. Be aware that IE11 provides a new format
 		// that is not backwards-compatible with previous versions of IE.
@@ -246,6 +247,14 @@ func (p *UserAgent) detectOS(s section) {
 	} else if s.name == "Opera" {
 		if len(s.comment) > 0 {
 			opera(p, s.comment)
+		}
+	} else if s.name == "Chrome" {
+		if len(sections) > 1 {
+			switch sections[1].name {
+			case "WIN":
+				p.platform = "Windows"
+				p.os = "Windows"
+			}
 		}
 	} else {
 		// Check whether this is a bot or just a weird browser.
