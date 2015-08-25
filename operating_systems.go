@@ -256,6 +256,16 @@ func (p *UserAgent) detectOS(sections []section) {
 				p.os = "Windows"
 			}
 		}
+		// unfortunately ugly hacks for a very poor user agents
+	} else if s.name == "WinHttp-Autoproxy-Service" {
+		p.os = "Windows"
+		p.platform = "Windows"
+	} else if s.name == "Microsoft-WNS" {
+		p.os = "Windows"
+		p.platform = "Windows"
+	} else if s.name == "Microsoft" && len(sections) > 1 && sections[1].name == "NCSI" {
+		p.os = "Windows"
+		p.platform = "Windows"
 	} else {
 		// Check whether this is a bot or just a weird browser.
 		p.undecided = true

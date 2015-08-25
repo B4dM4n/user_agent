@@ -82,7 +82,6 @@ var uastrings = []struct {
 	{"Rails", "Rails Testing"},
 	{"Python", "Python-urllib/2.7"},
 	{"Curl", "curl/7.28.1"},
-	{"WinHTTPAutoproxy", "WinHttp-Autoproxy-Service/5.1"},
 
 	// WebKit
 	{"ChromeLinux", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.97 Safari/537.11"},
@@ -107,6 +106,11 @@ var uastrings = []struct {
 	{"ChromeNothingAfterU", "Mozilla/5.0 (Linux; U) AppleWebKit/537.4 (KHTML, like Gecko) Chrome/22.0.1229.79 Safari/537.4"},
 	{"SafariOnSymbian", "Mozilla/5.0 (SymbianOS/9.1; U; [en-us]) AppleWebKit/413 (KHTML, like Gecko) Safari/413"},
 	{"ChromeStableNoMozillaWindows", "Chrome WIN 42.0.2311.135 (4e7063b6f4e912e3cb334f7feadf29ea49a29cab-refs/branch-heads/2311@{#506}) channel(stable)"},
+
+	// Windows services
+	{"WinHTTPAutoproxy", "WinHttp-Autoproxy-Service/5.1"},
+	{"WNS", "Microsoft-WNS/6.3"},
+	{"NCSI", "Microsoft NCSI"},
 }
 
 // Slice of the expected results from the previous slice.
@@ -178,7 +182,6 @@ var expected = []string{
 	"Browser:Rails Engine:Testing Bot:false Mobile:false",
 	"Browser:Python-urllib-2.7 Bot:false Mobile:false",
 	"Browser:curl-7.28.1 Bot:false Mobile:false",
-	"Browser:WinHttp-Autoproxy-Service-5.1 Bot:false Mobile:false",
 
 	// WebKit
 	"Mozilla:5.0 Platform:X11 OS:Linux x86_64 Browser:Chrome-23.0.1271.97 Engine:AppleWebKit-537.11 Bot:false Mobile:false",
@@ -203,6 +206,11 @@ var expected = []string{
 	"Mozilla:5.0 Platform:Linux OS:Linux Browser:Chrome-22.0.1229.79 Engine:AppleWebKit-537.4 Bot:false Mobile:false",
 	"Mozilla:5.0 Platform:Symbian OS:SymbianOS/9.1 Browser:Symbian-413 Engine:AppleWebKit-413 Bot:false Mobile:true",
 	"Mozilla:5.0 Platform:Windows OS:Windows Browser:Chrome-42.0.2311.135 Engine:AppleWebKit Bot:false Mobile:false",
+
+	// Windows services
+	"Platform:Windows OS:Windows Browser:WinHttpAutoproxyService-5.1 Bot:false Mobile:false",
+	"Platform:Windows OS:Windows Browser:WNS Bot:false Mobile:false",
+	"Platform:Windows OS:Windows Browser:NCSI Bot:false Mobile:false",
 }
 
 // Internal: beautify the UserAgent reference into a string so it can be

@@ -33,9 +33,11 @@ type Browser struct {
 func (p *UserAgent) detectBrowser(sections []section) {
 	slen := len(sections)
 
+	// special cases
+	switch sections[0].name {
 	// opera without mozilla version
-	if sections[0].name == "Opera" {
-		p.mozilla = "" // opera does not pass mozilla version
+	case "Opera":
+		p.mozilla = "" // opera does not pass mozilla
 		p.browser.Name = "Opera"
 		p.browser.Version = sections[0].version
 		p.browser.Engine = "Presto"
@@ -43,15 +45,31 @@ func (p *UserAgent) detectBrowser(sections []section) {
 			p.browser.EngineVersion = sections[1].version
 		}
 		return
-	}
-
 	// chrome without mozilla version
-	if sections[0].name == "Chrome" {
+	case "Chrome":
 		p.mozilla = "5.0" // chrome is always 5.0+
 		p.browser.Name = "Chrome"
 		if slen > 2 {
 			p.browser.Version = sections[2].name
 			p.browser.Engine = "AppleWebKit"
+		}
+		return
+	// windows proxy service
+	case "WinHttp-Autoproxy-Service":
+		p.mozilla = "" // not mozilla
+		p.browser.Name = "WinHttpAutoproxyService"
+		p.browser.Version = sections[0].version
+		return
+	// windows network service
+	case "Microsoft-WNS":
+		p.mozilla = "" // not mozilla
+		p.browser.Name = "WNS"
+		return
+	// windows connection service
+	case "Microsoft":
+		if slen > 1 && sections[1].name == "NCSI" {
+			p.mozilla = "" // not mozilla
+			p.browser.Name = sections[1].name
 		}
 		return
 	}
