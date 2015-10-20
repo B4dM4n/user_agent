@@ -9,6 +9,10 @@ import (
 	"strings"
 )
 
+var (
+	siteRe = regexp.MustCompile("http://.+\\.\\w+")
+)
+
 // Get the name of the bot from the website that may be in the given comment. If
 // there is no website in the comment, then an empty string is returned.
 func getFromSite(comment []string) string {
@@ -23,8 +27,7 @@ func getFromSite(comment []string) string {
 	}
 
 	// Pick the site.
-	re := regexp.MustCompile("http://.+\\.\\w+")
-	results := re.FindStringSubmatch(comment[idx])
+	results := siteRe.FindStringSubmatch(comment[idx])
 	if len(results) == 1 {
 		// If it's a simple comment, just return the name of the site.
 		if idx == 0 {
@@ -83,8 +86,7 @@ func (p *UserAgent) checkBot(sections []section) {
 		p.mozilla = ""
 
 		// Check whether the name has some suspicious "bot" in his name.
-		reg, _ := regexp.Compile("(?i)bot")
-		if reg.Match([]byte(sections[0].name)) {
+		if strings.Contains(strings.ToLower(sections[0].name), "bot") {
 			p.setSimple(sections[0].name, "", true)
 			return
 		}
